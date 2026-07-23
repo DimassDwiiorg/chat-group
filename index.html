@@ -43,7 +43,7 @@
       --msg-mine: #6366f1;
       --msg-mine-text: #ffffff;
       --reply-bg: rgba(255, 255, 255, 0.1);
-      --reply-text: #e2e8f0; /* WARNA TEKS REPLY DIPERTERANG */
+      --reply-text: #e2e8f0;
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
       --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
       --modal-overlay: rgba(0, 0, 0, 0.7);
@@ -96,48 +96,63 @@
     .avatar-wrapper { position: relative; display: inline-block; flex-shrink: 0; }
     .admin-crown { position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-12deg); font-size: 14px; background: transparent; border: none; box-shadow: none; filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.8)); z-index: 2; pointer-events: none; }
 
-    .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; position: relative; }
-    .message { display: flex; gap: 10px; max-width: 85%; align-items: flex-start; position: relative; }
+    /* CHAT MESSAGES CONTAINER */
+    .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; position: relative; }
+    .message { display: flex; gap: 8px; max-width: 85%; align-items: flex-end; position: relative; }
     .message.mine { align-self: flex-end; flex-direction: row-reverse; }
-    .message-content { background: var(--msg-other); color: var(--text-main); padding: 10px 14px; border-radius: 16px; border-top-left-radius: 4px; position: relative; min-width: 120px; cursor: pointer; }
-    .message.mine .message-content { background: var(--msg-mine); color: var(--msg-mine-text); border-radius: 16px; border-top-right-radius: 4px; }
+
+    /* CONTENT BUBBLE CHAT ALA WA */
+    .message-content { 
+      background: var(--msg-other); 
+      color: var(--text-main); 
+      padding: 6px 10px 8px 12px; 
+      border-radius: 12px; 
+      border-bottom-left-radius: 2px; 
+      position: relative; 
+      width: fit-content;
+      max-width: 100%;
+      cursor: pointer; 
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+    .message.mine .message-content { 
+      background: var(--msg-mine); 
+      color: var(--msg-mine-text); 
+      border-radius: 12px; 
+      border-bottom-right-radius: 2px; 
+      border-bottom-left-radius: 12px;
+    }
+    .message-content::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
     
-    /* REPLY DISPLAY INSIDE MESSAGE - TERANG & JELAS */
-    .reply-quote { background: var(--reply-bg); border-left: 4px solid var(--primary); border-radius: 8px; padding: 6px 10px; margin-bottom: 6px; font-size: 0.82rem; width: 100%; box-sizing: border-box; }
+    /* REPLY DISPLAY INSIDE MESSAGE */
+    .reply-quote { background: var(--reply-bg); border-left: 4px solid var(--primary); border-radius: 6px; padding: 4px 8px; margin-bottom: 6px; font-size: 0.82rem; width: 100%; box-sizing: border-box; }
     .message.mine .reply-quote { background: rgba(0, 0, 0, 0.2); border-left: 4px solid #ffffff; }
-    .reply-quote-user { font-weight: 700; font-size: 0.78rem; margin-bottom: 2px; color: var(--primary); }
+    .reply-quote-user { font-weight: 700; font-size: 0.75rem; margin-bottom: 2px; color: var(--primary); }
     .message.mine .reply-quote-user { color: #ffffff; }
-    .reply-quote-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--reply-text); font-size: 0.8rem; font-weight: 500; }
+    .reply-quote-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--reply-text); font-size: 0.78rem; font-weight: 500; }
     .message.mine .reply-quote-text { color: rgba(255, 255, 255, 0.9); }
 
-    /* ACTION BUTTON (REPLY) - DEFAULT DITHIDE DI MOBILE SEBELUM DIKLIK */
-    .reply-btn { opacity: 0; pointer-events: none; cursor: pointer; font-size: 0.8rem; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 4px 8px; border-radius: 8px; align-self: center; transition: opacity 0.2s, transform 0.2s; transform: scale(0.9); }
-    
-    /* Hover untuk PC / Chat Aktif untuk HP */
-    .message:hover .reply-btn, .message.active-chat .reply-btn { opacity: 1; pointer-events: auto; transform: scale(1); }
+    /* ACTION BUTTONS (REPLY & DELETE) */
+    .message-actions { opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; transform: scale(0.9); }
+    .message:hover .message-actions, .message.active-chat .message-actions { opacity: 1; pointer-events: auto; transform: scale(1); }
+    .reply-btn { cursor: pointer; font-size: 0.75rem; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 3px 6px; border-radius: 6px; align-self: center; }
 
     /* READ MORE STYLE */
-    .read-more-btn {
-      color: #38bdf8;
-      font-weight: 600;
-      cursor: pointer;
-      margin-left: 4px;
-      text-decoration: underline;
-      display: inline-block;
-    }
-    .message.mine .read-more-btn {
-      color: #93c5fd;
-    }
+    .read-more-btn { color: #38bdf8; font-weight: 600; cursor: pointer; margin-left: 4px; text-decoration: underline; display: inline-block; }
+    .message.mine .read-more-btn { color: #93c5fd; }
 
     /* AURA CHAT ADMIN */
     .message.admin-msg .message-content { background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(180, 83, 9, 0.35)); border: 1.5px solid #f59e0b; box-shadow: 0 0 12px rgba(245, 158, 11, 0.25); color: #fff; }
-    .username-tag { font-size: 0.8em; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .username-tag { font-size: 0.75rem; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 4px; line-height: 1.2; }
     .username-admin { color: #fbbf24 !important; font-weight: 800 !important; text-shadow: 0 0 8px rgba(245, 158, 11, 0.5); }
-    .admin-badge { background: #f59e0b; color: #000; font-size: 0.65rem; padding: 2px 6px; border-radius: 6px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+    .admin-badge { background: #f59e0b; color: #000; font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
 
-    .message-text { font-size: 0.9em; line-height: 1.4; word-break: break-word; white-space: pre-wrap; }
-    .timestamp { font-size: 0.68em; color: var(--text-muted); margin-top: 4px; text-align: right; }
-    .message.mine .timestamp { color: rgba(255, 255, 255, 0.7); }
+    .message-text { font-size: 0.88rem; line-height: 1.35; word-break: break-word; white-space: pre-wrap; display: inline; }
+    .timestamp { font-size: 0.62rem; color: var(--text-muted); margin-top: 2px; margin-left: 8px; float: right; position: relative; top: 4px; opacity: 0.8; }
+    .message.mine .timestamp { color: rgba(255, 255, 255, 0.75); }
     
     /* INPUT & REPLY PREVIEW AREA */
     .chat-input-wrapper { border-top: 1px solid var(--card-border); background: var(--card-bg); display: flex; flex-direction: column; }
@@ -387,7 +402,6 @@
     let replyTarget = null;
     let typingTimeout = null;
 
-    // EVENT LISTENER KLIK DI LUAR CHAT UNTUK MENUTUP TOMBOL REPLY DI HP
     document.addEventListener('click', (e) => {
       if (!e.target.closest('.message')) {
         document.querySelectorAll('.message.active-chat').forEach(msg => {
@@ -396,9 +410,7 @@
       }
     });
 
-    // FUNGSI TOGGLE REPLAY BUTTON SAAT CHAT DI-TAP
     window.toggleChatActive = (event, element) => {
-      // Mencegah trigger saat menekan tombol 'Baca Selengkapnya' atau tombol reply itu sendiri
       if (event.target.classList.contains('read-more-btn') || event.target.closest('.reply-btn')) {
         return;
       }
@@ -406,18 +418,15 @@
       const parentMessage = element.closest('.message');
       const isAlreadyActive = parentMessage.classList.contains('active-chat');
       
-      // Sembunyikan semua tombol reply yang terbuka dulu
       document.querySelectorAll('.message.active-chat').forEach(msg => {
         msg.classList.remove('active-chat');
       });
 
-      // Jika belum aktif, aktifkan
       if (!isAlreadyActive) {
         parentMessage.classList.add('active-chat');
       }
     };
 
-    // FUNGSI TOGGLE BACA SELENGKAPNYA
     window.toggleReadMore = (btn) => {
       const parent = btn.parentElement;
       const shortText = parent.querySelector('.text-short');
@@ -428,7 +437,7 @@
         fullText.classList.remove('hidden');
         btn.innerText = ' Sembunyikan';
       } else {
-        shortText.classList.remove('hidden');
+        shortText.remove('hidden');
         fullText.classList.add('hidden');
         btn.innerText = '... Baca selengkapnya';
       }
@@ -648,18 +657,57 @@
       await addDoc(collection(db, "messages"), messagePayload);
     };
 
+    /* FUNGSI DELETE CHAT (USER & ADMIN) */
+    window.deleteMessage = async (msgId, msgUid, isMine) => {
+      if (!currentUserData) return;
+
+      const isAdmin = currentUserData.role === 'admin';
+
+      if (!isMine && !isAdmin) {
+        return showToast('Kamu hanya bisa menghapus pesanmu sendiri!', 'error');
+      }
+
+      if (!confirm('Apakah kamu yakin ingin menghapus pesan ini?')) return;
+
+      try {
+        const msgRef = doc(db, "messages", msgId);
+
+        if (isAdmin && !isMine) {
+          await updateDoc(msgRef, {
+            text: "🚫 Pesan ini telah dihapus oleh Admin!",
+            isDeletedByAdmin: true
+          });
+          showToast('Pesan berhasil dihapus oleh Admin', 'info');
+        } else {
+          await deleteDoc(msgRef);
+          showToast('Pesan berhasil dihapus', 'success');
+        }
+      } catch (err) {
+        showToast('Gagal menghapus pesan: ' + err.message, 'error');
+      }
+    };
+
     function loadMessages() {
       const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
       onSnapshot(q, (snapshot) => {
         const container = document.getElementById('chat-messages');
         container.innerHTML = '';
-        snapshot.forEach((doc) => {
-          const msg = doc.data();
+
+        snapshot.forEach((docSnap) => {
+          const msg = docSnap.data();
+          const msgId = docSnap.id;
           const isMine = msg.uid === currentUserData?.uid;
           const isAdmin = msg.role === 'admin';
-          let timeStr = msg.createdAt?.toDate ? msg.createdAt.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Baru saja';
+          const isCurrentUserAdmin = currentUserData?.role === 'admin';
+
+          let timeStr = msg.createdAt?.toDate 
+            ? msg.createdAt.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+            : 'Baru saja';
+            
           const userColor = msg.userColor || generateUniqueColor(msg.username || 'User');
           const usernameStyle = isAdmin ? '' : `color: ${userColor};`;
+
+          const canDelete = isMine || isCurrentUserAdmin;
 
           let replyHTML = '';
           if (msg.replyTo) {
@@ -668,6 +716,13 @@
                 <div class="reply-quote-user">${escapeHTML(msg.replyTo.username)}</div>
                 <div class="reply-quote-text">${escapeHTML(msg.replyTo.text)}</div>
               </div>`;
+          }
+
+          let messageContentHTML = '';
+          if (msg.isDeletedByAdmin) {
+            messageContentHTML = `<i style="opacity: 0.8; font-size: 0.82rem; color: #ef4444; font-weight: 600;">${msg.text}</i>`;
+          } else {
+            messageContentHTML = formatMessageText(msg.text, 300);
           }
 
           const msgEl = document.createElement('div');
@@ -683,13 +738,18 @@
                 ${msg.username}
                 ${isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
               </span>
-              <div class="message-text">${formatMessageText(msg.text, 300)}</div>
+              <div class="message-text">${messageContentHTML}</div>
               <div class="timestamp">${timeStr}</div>
             </div>
-            <button class="reply-btn" onclick="setReply('${escapeHTML(msg.username)}', '${escapeHTML(msg.text)}')">↩️ Reply</button>
+            
+            <div class="message-actions" style="display: flex; gap: 4px; align-self: center;">
+              ${!msg.isDeletedByAdmin ? `<button class="reply-btn" onclick="setReply('${escapeHTML(msg.username)}', '${escapeHTML(msg.text)}')">↩️</button>` : ''}
+              ${canDelete ? `<button class="reply-btn" style="color: #ef4444;" onclick="deleteMessage('${msgId}', '${msg.uid}', ${isMine})">🗑️</button>` : ''}
+            </div>
           `;
           container.appendChild(msgEl);
         });
+
         container.scrollTop = container.scrollHeight;
       });
     }
